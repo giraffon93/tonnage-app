@@ -1,7 +1,7 @@
 {
   "name": "Calcul Tonnage",
   "short_name": "Tonnage",
-  "start_url": "/tonnage-app/",
+  "start_url": "https://giraffon93.github.io/tonnage-app/",
   "display": "standalone",
   "background_color": "#000000",
   "theme_color": "#000000",
