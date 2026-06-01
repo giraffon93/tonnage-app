@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>Calcul Tonnage</title>
-<meta name="app-version" content="1.0.2">
+<meta name="app-version" content="1.0.3">
 
 <style>
 body{
@@ -133,74 +133,10 @@ input, select{
   <div class="nkey">-</div>
   <div class="nkey">0</div>
   <div class="nkey">,</div>
-  <div class="nkey" data-action="clear">C</div>
 </div>
 
 <div id="version"></div>
 
 <script>
 function calc(){
-  const L = parseFloat(document.getElementById('L').value.replace(",", ".")) || 0;
-  const l = parseFloat(document.getElementById('l').value.replace(",", ".")) || 0;
-  const e = parseFloat(document.getElementById('e').value.replace(",", ".")) || 0;
-  const q = +document.getElementById('q').value || 1;
-
-  const surface = L * l;
-  const tonnage = surface * (e / 100) * 2.7 * q;
-  const kg = tonnage * 1000;
-
-  document.getElementById('area').textContent = surface.toFixed(2) + " m²";
-  document.getElementById('t').textContent = tonnage.toFixed(2) + " t";
-  document.getElementById('kg').textContent = Math.round(kg).toLocaleString() + " kg";
-}
-
-document.querySelectorAll("input, select").forEach(el=>{
-  el.addEventListener("input", calc);
-});
-
-window.addEventListener("load", calc);
-
-// VERSION
-document.getElementById("version").textContent =
-  "Version " + document.querySelector('meta[name=\"app-version\"]').content;
-
-
-// CLAVIER NUMÉRIQUE
-let activeInput = null;
-
-document.querySelectorAll("input").forEach(inp => {
-  inp.addEventListener("focus", () => activeInput = inp);
-});
-
-document.querySelectorAll(".nkey").forEach(key => {
-  key.addEventListener("click", () => {
-
-    if (!activeInput) return;
-
-    const action = key.dataset.action;
-
-    if (!action) {
-      activeInput.value += key.textContent;
-    } 
-    else if (action === "del") {
-      activeInput.value = activeInput.value.slice(0, -1);
-    }
-    else if (action === "clear") {
-      activeInput.value = "";
-    }
-    else if (action === "next") {
-      const inputs = [...document.querySelectorAll("input")];
-      let i = inputs.indexOf(activeInput);
-      if (i < inputs.length - 1) inputs[i + 1].focus();
-    }
-    else if (action === "enter") {
-      activeInput.blur();
-    }
-
-    calc();
-  });
-});
-</script>
-
-</body>
-</html>
+  const L = parse
