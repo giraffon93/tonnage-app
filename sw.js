@@ -19,4 +19,17 @@ self.addEventListener("activate", event => {
       Promise.all(
         keys
           .filter(key => key !== CACHE_NAME)
-         
+          .map(key => caches.delete(key))
+      )
+    )
+  );
+  clients.claim();
+});
+
+self.addEventListener("fetch", event => {
+  event.respondWith(
+    caches.match(event.request).then(response =>
+      response || fetch(event.request)
+    )
+  );
+});
