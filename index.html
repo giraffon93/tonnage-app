@@ -5,8 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>Calcul Tonnage</title>
-
-<meta name="app-version" content="1.0.0">
+<meta name="app-version" content="1.0.1">
 
 <style>
 body{
@@ -68,10 +67,12 @@ input, select{
 
 <h1>CALCUL TONNAGE</h1>
 
-<input id="L" type="number" placeholder="Longueur (m)">
-<input id="l" type="number" placeholder="Largeur (m)">
-<input id="e" type="number" placeholder="Épaisseur (cm)">
+<!-- Clavier numérique -->
+<input id="L" type="number" inputmode="numeric" pattern="[0-9]*" placeholder="Longueur (m)">
+<input id="l" type="number" inputmode="numeric" pattern="[0-9]*" placeholder="Largeur (m)">
+<input id="e" type="number" inputmode="numeric" pattern="[0-9]*" placeholder="Épaisseur (cm)">
 
+<!-- Quantité 1 → 10 -->
 <select id="q">
   <option value="1">Quantité : 1</option>
   <option value="2">Quantité : 2</option>
@@ -94,23 +95,18 @@ input, select{
 <script>
 function calc(){
 
-  const L = Number(document.getElementById('L').value) || 0;
-  const l = Number(document.getElementById('l').value) || 0;
-  const e = Number(document.getElementById('e').value) || 0;
-  const q = Number(document.getElementById('q').value) || 1;
+  const L = +document.getElementById('L').value || 0;
+  const l = +document.getElementById('l').value || 0;
+  const e = +document.getElementById('e').value || 0;
+  const q = +document.getElementById('q').value || 1;
 
   const surface = L * l;
-  const tonnage = L * l * (e / 100) * 2.7 * q;
+  const tonnage = surface * (e / 100) * 2.7 * q; // densité 2.7
   const kg = tonnage * 1000;
 
-  document.getElementById('area').textContent =
-    surface.toFixed(2) + " m²";
-
-  document.getElementById('t').textContent =
-    tonnage.toFixed(2) + " t";
-
-  document.getElementById('kg').textContent =
-    Math.round(kg).toLocaleString() + " kg";
+  document.getElementById('area').textContent = surface.toFixed(2) + " m²";
+  document.getElementById('t').textContent = tonnage.toFixed(2) + " t";
+  document.getElementById('kg').textContent = Math.round(kg).toLocaleString() + " kg";
 }
 
 document.querySelectorAll("input, select").forEach(el=>{
@@ -119,9 +115,9 @@ document.querySelectorAll("input, select").forEach(el=>{
 
 window.addEventListener("load", calc);
 
-// VERSION DISPLAY
+// VERSION
 document.getElementById("version").textContent =
-  "Version " + document.querySelector('meta[name="app-version"]').content;
+  "Version " + document.querySelector('meta[name=\"app-version\"]').content;
 </script>
 
 </body>
