@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>Calcul Tonnage</title>
-<meta name="app-version" content="1.0.6">
+<meta name="app-version" content="1.0.7">
 
 <!-- PWA -->
 <link rel="manifest" href="manifest.json">
@@ -79,17 +79,19 @@ input, select{
 <input id="l" type="text" inputmode="decimal" placeholder="Largeur (m)">
 <input id="e" type="text" inputmode="decimal" placeholder="Épaisseur (cm)">
 
+<!-- Nouveau sélecteur -->
 <select id="q">
-  <option value="1">Quantité : 1</option>
-  <option value="2">Quantité : 2</option>
-  <option value="3">Quantité : 3</option>
-  <option value="4">Quantité : 4</option>
-  <option value="5">Quantité : 5</option>
-  <option value="6">Quantité : 6</option>
-  <option value="7">Quantité : 7</option>
-  <option value="8">Quantité : 8</option>
-  <option value="9">Quantité : 9</option>
-  <option value="10">Quantité : 10</option>
+  <option value="" disabled selected>Nombre de tranches</option>
+  <option value="1">1</option>
+  <option value="2">2</option>
+  <option value="3">3</option>
+  <option value="4">4</option>
+  <option value="5">5</option>
+  <option value="6">6</option>
+  <option value="7">7</option>
+  <option value="8">8</option>
+  <option value="9">9</option>
+  <option value="10">10</option>
 </select>
 
 <div id="area">0 m²</div>
@@ -103,7 +105,7 @@ function calc(){
   const L = parseFloat(document.getElementById('L').value.replace(",", ".")) || 0;
   const l = parseFloat(document.getElementById('l').value.replace(",", ".")) || 0;
   const e = parseFloat(document.getElementById('e').value.replace(",", ".")) || 0;
-  const q = +document.getElementById('q').value || 1;
+  const q = parseFloat(document.getElementById('q').value) || 0;
 
   const surface = L * l;
   const tonnage = surface * (e / 100) * 2.7 * q;
@@ -114,6 +116,14 @@ function calc(){
   document.getElementById('kg').textContent = Math.round(kg).toLocaleString() + " kg";
 }
 
+// Mise à jour du texte du sélecteur
+document.getElementById("q").addEventListener("change", () => {
+  const q = document.getElementById("q").value;
+  document.getElementById("q").options[0].textContent = "Nombre de tranches : " + q;
+  calc();
+});
+
+// Mise à jour automatique
 document.querySelectorAll("input, select").forEach(el=>{
   el.addEventListener("input", calc);
 });
@@ -122,7 +132,7 @@ window.addEventListener("load", calc);
 
 // VERSION
 document.getElementById("version").textContent =
-  "Version " + document.querySelector('meta[name=\"app-version\"]').content;
+  "Version " + document.querySelector('meta[name="app-version"]').content;
 
 // Service Worker
 if ("serviceWorker" in navigator) {
