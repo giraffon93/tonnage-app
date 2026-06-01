@@ -3,7 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Tonnage App</title>
+
+<title>Calcul Tonnage</title>
 
 <link rel="manifest" href="manifest.json">
 
@@ -57,7 +58,7 @@ input{
 
 <body>
 
-<h1>Tonnage</h1>
+<h1>CALCUL TONNAGE</h1>
 
 <input id="L" type="number" placeholder="Longueur (m)">
 <input id="l" type="number" placeholder="Largeur (m)">
@@ -70,7 +71,6 @@ input{
 
 <script>
 function calc(){
-
   const L = +document.getElementById('L').value || 0;
   const l = +document.getElementById('l').value || 0;
   const e = +document.getElementById('e').value || 0;
@@ -90,10 +90,13 @@ document.querySelectorAll("input").forEach(i=>{
 });
 
 window.addEventListener("load", calc);
+</script>
 
-// service worker
+<script>
 if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('service-worker.js');
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('./service-worker.js');
+  });
 }
 </script>
 
