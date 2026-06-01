@@ -6,6 +6,8 @@
 
 <title>Calcul Tonnage</title>
 
+<meta name="app-version" content="1.0.0">
+
 <link rel="manifest" href="manifest.json">
 
 <style>
@@ -71,6 +73,7 @@ input{
 
 <script>
 function calc(){
+
   const L = +document.getElementById('L').value || 0;
   const l = +document.getElementById('l').value || 0;
   const e = +document.getElementById('e').value || 0;
@@ -85,6 +88,7 @@ function calc(){
   document.getElementById('kg').textContent = Math.round(kg) + " kg";
 }
 
+// calcul live
 document.querySelectorAll("input").forEach(i=>{
   i.addEventListener("input", calc);
 });
@@ -93,11 +97,42 @@ window.addEventListener("load", calc);
 </script>
 
 <script>
+/* SERVICE WORKER */
 if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => {
-    navigator.serviceWorker.register('./service-worker.js');
+  window.addEventListener('load', async () => {
+
+    const reg = await navigator.serviceWorker.register('./service-worker.js');
+
+    // force check update à chaque ouverture
+    reg.update();
   });
 }
+
+/* AUTO UPDATE VERSION CHECK */
+(async function () {
+
+  const currentVersion = document.querySelector('meta[name="app-version"]').content;
+  const storedVersion = localStorage.getItem("app_version");
+
+  if (!storedVersion) {
+    localStorage.setItem("app_version", currentVersion);
+    return;
+  }
+
+  if (storedVersion !== currentVersion) {
+
+    if ('caches' in window) {
+      const keys = await caches.keys();
+      for (const key of keys) {
+        await caches.delete(key);
+      }
+    }
+
+    localStorage.setItem("app_version", currentVersion);
+    location.reload();
+  }
+
+})();
 </script>
 
 </body>
