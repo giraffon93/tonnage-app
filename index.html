@@ -7,6 +7,13 @@
 <title>Calcul Tonnage</title>
 <meta name="app-version" content="1.0.4">
 
+<!-- PWA -->
+<link rel="manifest" href="manifest.json">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="apple-mobile-web-app-title" content="Tonnage">
+<link rel="apple-touch-icon" href="icon.png">
+
 <style>
 body{
   margin:0;
@@ -32,7 +39,6 @@ input, select{
   outline:none;
 }
 
-/* Résultats */
 #area{
   text-align:center;
   font-size:18px;
@@ -68,7 +74,7 @@ input, select{
 
 <h1>CALCUL TONNAGE</h1>
 
-<!-- Inputs avec clavier iOS natif -->
+<!-- Clavier iOS natif -->
 <input id="L" type="text" inputmode="decimal" placeholder="Longueur (m)">
 <input id="l" type="text" inputmode="decimal" placeholder="Largeur (m)">
 <input id="e" type="text" inputmode="decimal" placeholder="Épaisseur (cm)">
@@ -86,7 +92,6 @@ input, select{
   <option value="10">Quantité : 10</option>
 </select>
 
-<!-- Résultats -->
 <div id="area">0 m²</div>
 <div id="t">0.00 t</div>
 <div id="kg">0 kg</div>
@@ -117,7 +122,12 @@ window.addEventListener("load", calc);
 
 // VERSION
 document.getElementById("version").textContent =
-  "Version " + document.querySelector('meta[name="app-version"]').content;
+  "Version " + document.querySelector('meta[name=\"app-version\"]').content;
+
+// Service Worker
+if ("serviceWorker" in navigator) {
+  navigator.serviceWorker.register("sw.js");
+}
 </script>
 
 </body>
