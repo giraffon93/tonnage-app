@@ -23,7 +23,7 @@ h1{
   font-size:20px;
 }
 
-input{
+input, select{
   width:100%;
   padding:12px;
   margin:6px 0;
@@ -71,7 +71,19 @@ input{
 <input id="L" type="number" placeholder="Longueur (m)">
 <input id="l" type="number" placeholder="Largeur (m)">
 <input id="e" type="number" placeholder="Épaisseur (cm)">
-<input id="q" type="number" value="1" placeholder="Quantité">
+
+<select id="q">
+  <option value="1">Quantité : 1</option>
+  <option value="2">Quantité : 2</option>
+  <option value="3">Quantité : 3</option>
+  <option value="4">Quantité : 4</option>
+  <option value="5">Quantité : 5</option>
+  <option value="6">Quantité : 6</option>
+  <option value="7">Quantité : 7</option>
+  <option value="8">Quantité : 8</option>
+  <option value="9">Quantité : 9</option>
+  <option value="10">Quantité : 10</option>
+</select>
 
 <div id="area">0 m²</div>
 <div id="t">0.00 t</div>
@@ -91,18 +103,23 @@ function calc(){
   const tonnage = L * l * (e / 100) * 2.7 * q;
   const kg = tonnage * 1000;
 
-  document.getElementById('area').textContent = surface.toFixed(2) + " m²";
-  document.getElementById('t').textContent = tonnage.toFixed(2) + " t";
-  document.getElementById('kg').textContent = Math.round(kg) + " kg";
+  document.getElementById('area').textContent =
+    surface.toFixed(2) + " m²";
+
+  document.getElementById('t').textContent =
+    tonnage.toFixed(2) + " t";
+
+  document.getElementById('kg').textContent =
+    Math.round(kg).toLocaleString() + " kg";
 }
 
-document.querySelectorAll("input").forEach(i=>{
-  i.addEventListener("input", calc);
+document.querySelectorAll("input, select").forEach(el=>{
+  el.addEventListener("input", calc);
 });
 
 window.addEventListener("load", calc);
 
-// affichage version
+// VERSION DISPLAY
 document.getElementById("version").textContent =
   "Version " + document.querySelector('meta[name="app-version"]').content;
 </script>
