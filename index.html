@@ -77,39 +77,34 @@ input{
 <div id="t">0.00 t</div>
 <div id="kg">0 kg</div>
 
-<div id="version">v1.0.0</div>
+<div id="version"></div>
 
 <script>
 function calc(){
 
-  const L = Number(Linput.value) || 0;
-  const l = Number(linput.value) || 0;
-  const e = Number(einput.value) || 0;
-  const q = Number(qinput.value) || 1;
+  const L = Number(document.getElementById('L').value) || 0;
+  const l = Number(document.getElementById('l').value) || 0;
+  const e = Number(document.getElementById('e').value) || 0;
+  const q = Number(document.getElementById('q').value) || 1;
 
   const surface = L * l;
   const tonnage = L * l * (e / 100) * 2.7 * q;
   const kg = tonnage * 1000;
 
-  area.textContent = surface.toFixed(2) + " m²";
-  t.textContent = tonnage.toFixed(2) + " t";
-  kgEl.textContent = Math.round(kg) + " kg";
+  document.getElementById('area').textContent = surface.toFixed(2) + " m²";
+  document.getElementById('t').textContent = tonnage.toFixed(2) + " t";
+  document.getElementById('kg').textContent = Math.round(kg) + " kg";
 }
-
-const Linput = document.getElementById("L");
-const linput = document.getElementById("l");
-const einput = document.getElementById("e");
-const qinput = document.getElementById("q");
-
-const area = document.getElementById("area");
-const t = document.getElementById("t");
-const kgEl = document.getElementById("kg");
 
 document.querySelectorAll("input").forEach(i=>{
   i.addEventListener("input", calc);
 });
 
 window.addEventListener("load", calc);
+
+// affichage version
+document.getElementById("version").textContent =
+  "Version " + document.querySelector('meta[name="app-version"]').content;
 </script>
 
 </body>
