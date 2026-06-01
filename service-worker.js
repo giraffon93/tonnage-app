@@ -1,38 +1,20 @@
-const CACHE_NAME = "tonnage-v2";
+const CACHE_NAME = "tonnage-v1";
 
-const FILES = [
-  "./",
-  "./index.html",
-  "./manifest.json"
-];
-
-// INSTALL
 self.addEventListener("install", (event) => {
-  self.skipWaiting(); // force activation immédiate
-
-  event.waitUntil(
-    caches.open(CACHE_NAME).then(cache => cache.addAll(FILES))
-  );
+  self.skipWaiting();
 });
 
-// ACTIVATE
 self.addEventListener("activate", (event) => {
   event.waitUntil(
     caches.keys().then(keys =>
-      Promise.all(
-        keys.map(key => {
-          if (key !== CACHE_NAME) {
-            return caches.delete(key);
-          }
-        })
-      )
+      Promise.all(keys.map(key => caches.delete(key)))
     )
   );
 
-  self.clients.claim(); // prend le contrôle direct
+  self.clients.claim();
 });
 
-// FETCH
+// network-first (IMPORTANT pour les updates iPhone)
 self.addEventListener("fetch", (event) => {
   event.respondWith(
     fetch(event.request).catch(() =>
