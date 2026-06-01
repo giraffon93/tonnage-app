@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>Calcul Tonnage</title>
-<meta name="app-version" content="1.0.3">
+<meta name="app-version" content="1.0.4">
 
 <style>
 body{
@@ -61,28 +61,6 @@ input, select{
   opacity:0.4;
   margin-top:15px;
 }
-
-/* CLAVIER NUMÉRIQUE */
-#numpad {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 8px;
-  margin-top: 20px;
-}
-
-.nkey {
-  background: #222;
-  color: #fff;
-  padding: 18px 0;
-  text-align: center;
-  font-size: 22px;
-  border-radius: 10px;
-  user-select: none;
-}
-
-.nkey:active {
-  background: #444;
-}
 </style>
 </head>
 
@@ -90,10 +68,10 @@ input, select{
 
 <h1>CALCUL TONNAGE</h1>
 
-<!-- Inputs -->
-<input id="L" type="text" placeholder="Longueur (m)">
-<input id="l" type="text" placeholder="Largeur (m)">
-<input id="e" type="text" placeholder="Épaisseur (cm)">
+<!-- Inputs avec clavier iOS natif -->
+<input id="L" type="text" inputmode="decimal" placeholder="Longueur (m)">
+<input id="l" type="text" inputmode="decimal" placeholder="Largeur (m)">
+<input id="e" type="text" inputmode="decimal" placeholder="Épaisseur (cm)">
 
 <select id="q">
   <option value="1">Quantité : 1</option>
@@ -113,30 +91,34 @@ input, select{
 <div id="t">0.00 t</div>
 <div id="kg">0 kg</div>
 
-<!-- CLAVIER NUMÉRIQUE STYLE iOS -->
-<div id="numpad">
-  <div class="nkey">7</div>
-  <div class="nkey">8</div>
-  <div class="nkey">9</div>
-  <div class="nkey" data-action="del">⌫</div>
-
-  <div class="nkey">4</div>
-  <div class="nkey">5</div>
-  <div class="nkey">6</div>
-  <div class="nkey" data-action="next">→</div>
-
-  <div class="nkey">1</div>
-  <div class="nkey">2</div>
-  <div class="nkey">3</div>
-  <div class="nkey" data-action="enter">↵</div>
-
-  <div class="nkey">-</div>
-  <div class="nkey">0</div>
-  <div class="nkey">,</div>
-</div>
-
 <div id="version"></div>
 
 <script>
 function calc(){
-  const L = parse
+  const L = parseFloat(document.getElementById('L').value.replace(",", ".")) || 0;
+  const l = parseFloat(document.getElementById('l').value.replace(",", ".")) || 0;
+  const e = parseFloat(document.getElementById('e').value.replace(",", ".")) || 0;
+  const q = +document.getElementById('q').value || 1;
+
+  const surface = L * l;
+  const tonnage = surface * (e / 100) * 2.7 * q;
+  const kg = tonnage * 1000;
+
+  document.getElementById('area').textContent = surface.toFixed(2) + " m²";
+  document.getElementById('t').textContent = tonnage.toFixed(2) + " t";
+  document.getElementById('kg').textContent = Math.round(kg).toLocaleString() + " kg";
+}
+
+document.querySelectorAll("input, select").forEach(el=>{
+  el.addEventListener("input", calc);
+});
+
+window.addEventListener("load", calc);
+
+// VERSION
+document.getElementById("version").textContent =
+  "Version " + document.querySelector('meta[name="app-version"]').content;
+</script>
+
+</body>
+</html>
