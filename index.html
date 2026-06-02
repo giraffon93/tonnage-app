@@ -39,7 +39,7 @@ input, select{
   outline:none;
 }
 
-#area{
+#area, #m3{
   text-align:center;
   font-size:18px;
   opacity:0.8;
@@ -74,8 +74,8 @@ input, select{
 
 <h1>CALCUL TONNAGE</h1>
 
-<input id="L" type="text" inputmode="decimal" placeholder="Longueur (m)">
-<input id="l" type="text" inputmode="decimal" placeholder="Largeur (m)">
+<input id="L" type="text" inputmode="decimal" placeholder="Longueur (cm)">
+<input id="l" type="text" inputmode="decimal" placeholder="Largeur (cm)">
 <input id="e" type="text" inputmode="decimal" placeholder="Épaisseur (cm)">
 
 <select id="q">
@@ -93,6 +93,7 @@ input, select{
 </select>
 
 <div id="area">0 m²</div>
+<div id="m3">0 m³</div>
 <div id="t">0.00 t</div>
 <div id="kg">0 kg</div>
 
@@ -100,18 +101,22 @@ input, select{
 
 <script>
 function calc(){
-  const L = parseFloat(document.getElementById('L').value.replace(",", ".")) || 0;
-  const l = parseFloat(document.getElementById('l').value.replace(",", ".")) || 0;
-  const e = parseFloat(document.getElementById('e').value.replace(",", ".")) || 0;
+  const L = (parseFloat(document.getElementById('L').value.replace(",", ".")) || 0) / 100;
+  const l = (parseFloat(document.getElementById('l').value.replace(",", ".")) || 0) / 100;
+  const e = (parseFloat(document.getElementById('e').value.replace(",", ".")) || 0) / 100;
   const q = parseFloat(document.getElementById('q').value) || 0;
 
   const surface_unitaire = L * l;
   const surface_totale = surface_unitaire * q;
 
-  const tonnage = surface_totale * (e / 100) * 2.7;
+  const volume_unitaire = L * l * e;
+  const volume_total = volume_unitaire * q;
+
+  const tonnage = volume_total * 2.7;
   const kg = tonnage * 1000;
 
   document.getElementById('area').textContent = surface_totale.toFixed(2) + " m²";
+  document.getElementById('m3').textContent = volume_total.toFixed(3) + " m³";
   document.getElementById('t').textContent = tonnage.toFixed(2) + " t";
   document.getElementById('kg').textContent = Math.round(kg).toLocaleString() + " kg";
 }
