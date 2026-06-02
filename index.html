@@ -105,11 +105,13 @@ function calc(){
   const e = parseFloat(document.getElementById('e').value.replace(",", ".")) || 0;
   const q = parseFloat(document.getElementById('q').value) || 0;
 
-  const surface = L * l;
-  const tonnage = surface * (e / 100) * 2.7 * q;
+  const surface_unitaire = L * l;
+  const surface_totale = surface_unitaire * q;
+
+  const tonnage = surface_totale * (e / 100) * 2.7;
   const kg = tonnage * 1000;
 
-  document.getElementById('area').textContent = surface.toFixed(2) + " m²";
+  document.getElementById('area').textContent = surface_totale.toFixed(2) + " m²";
   document.getElementById('t').textContent = tonnage.toFixed(2) + " t";
   document.getElementById('kg').textContent = Math.round(kg).toLocaleString() + " kg";
 }
