@@ -29,10 +29,15 @@ h1{
   font-size:20px;
 }
 
-input, select{
+label{
+  font-size:16px;
+  opacity:0.8;
+}
+
+input{
   width:100%;
   padding:12px;
-  margin:6px 0;
+  margin:6px 0 14px 0;
   font-size:18px;
   border-radius:8px;
   border:none;
@@ -74,23 +79,17 @@ input, select{
 
 <h1>CALCUL TONNAGE</h1>
 
-<input id="L" type="text" inputmode="decimal" placeholder="Longueur (cm)">
-<input id="l" type="text" inputmode="decimal" placeholder="Largeur (cm)">
-<input id="e" type="text" inputmode="decimal" placeholder="Épaisseur (cm)">
+<label>Longueur (cm)</label>
+<input id="L" type="text" inputmode="decimal" placeholder="Ex : 250">
 
-<select id="q">
-  <option value="" disabled selected>Nombre de tranches</option>
-  <option value="1">1</option>
-  <option value="2">2</option>
-  <option value="3">3</option>
-  <option value="4">4</option>
-  <option value="5">5</option>
-  <option value="6">6</option>
-  <option value="7">7</option>
-  <option value="8">8</option>
-  <option value="9">9</option>
-  <option value="10">10</option>
-</select>
+<label>Largeur (cm)</label>
+<input id="l" type="text" inputmode="decimal" placeholder="Ex : 120">
+
+<label>Épaisseur (cm)</label>
+<input id="e" type="text" inputmode="decimal" placeholder="Ex : 12">
+
+<label>Nombre de tranches</label>
+<input id="q" type="number" value="1" min="1">
 
 <div id="area">0 m²</div>
 <div id="m3">0 m³</div>
@@ -104,7 +103,7 @@ function calc(){
   const L = (parseFloat(document.getElementById('L').value.replace(",", ".")) || 0) / 100;
   const l = (parseFloat(document.getElementById('l').value.replace(",", ".")) || 0) / 100;
   const e = (parseFloat(document.getElementById('e').value.replace(",", ".")) || 0) / 100;
-  const q = parseFloat(document.getElementById('q').value) || 0;
+  const q = parseFloat(document.getElementById('q').value) || 1;
 
   const surface_unitaire = L * l;
   const surface_totale = surface_unitaire * q;
@@ -121,20 +120,14 @@ function calc(){
   document.getElementById('kg').textContent = Math.round(kg).toLocaleString() + " kg";
 }
 
-document.getElementById("q").addEventListener("change", () => {
-  const q = document.getElementById("q").value;
-  document.getElementById("q").options[0].textContent = "Nombre de tranches : " + q;
-  calc();
-});
-
-document.querySelectorAll("input, select").forEach(el=>{
+document.querySelectorAll("input").forEach(el=>{
   el.addEventListener("input", calc);
 });
 
 window.addEventListener("load", calc);
 
 document.getElementById("version").textContent =
-  "Version " + document.querySelector('meta[name="app-version"]').content;
+  "Version " + document.querySelector('meta[name=\"app-version\"]').content;
 
 if ("serviceWorker" in navigator) {
   navigator.serviceWorker.register("sw.js");
