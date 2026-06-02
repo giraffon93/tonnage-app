@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>Calcul Tonnage</title>
-<meta name="app-version" content="1.0.8">
+<meta name="app-version" content="1.0.9">
 
 <!-- PWA -->
 <link rel="manifest" href="manifest.json">
@@ -89,7 +89,7 @@ input{
 <input id="e" type="text" inputmode="decimal" placeholder="Ex : 12">
 
 <label>Nombre de tranches</label>
-<input id="q" type="number" value="1" min="1">
+<input id="q" type="text" inputmode="decimal" value="1">
 
 <div id="area">0 m²</div>
 <div id="m3">0 m³</div>
@@ -127,7 +127,7 @@ document.querySelectorAll("input").forEach(el=>{
 window.addEventListener("load", calc);
 
 document.getElementById("version").textContent =
-  "Version " + document.querySelector('meta[name=\"app-version\"]').content;
+  "Version " + document.querySelector('meta[name="app-version"]').content;
 
 if ("serviceWorker" in navigator) {
   navigator.serviceWorker.register("sw.js");
