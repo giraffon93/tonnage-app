@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>Calcul Tonnage</title>
-<meta name="app-version" content="1.0.9">
+<meta name="app-version" content="1.0.10">
 
 <!-- PWA -->
 <link rel="manifest" href="manifest.json">
@@ -42,6 +42,17 @@ input{
   border-radius:8px;
   border:none;
   outline:none;
+}
+
+#refresh{
+  width:100%;
+  padding:12px;
+  margin-top:10px;
+  font-size:18px;
+  border-radius:8px;
+  border:none;
+  background:#222;
+  color:#fff;
 }
 
 #area, #m3{
@@ -91,6 +102,8 @@ input{
 <label>Nombre de tranches</label>
 <input id="q" type="text" inputmode="decimal" value="1">
 
+<button id="refresh">🔄 Recharger</button>
+
 <div id="area">0 m²</div>
 <div id="m3">0 m³</div>
 <div id="t">0.00 t</div>
@@ -128,6 +141,15 @@ window.addEventListener("load", calc);
 
 document.getElementById("version").textContent =
   "Version " + document.querySelector('meta[name="app-version"]').content;
+
+// 🔄 Bouton Refresh
+document.getElementById("refresh").addEventListener("click", () => {
+  caches.keys().then(keys => {
+    keys.forEach(key => caches.delete(key));
+  }).then(() => {
+    location.reload(true);
+  });
+});
 
 if ("serviceWorker" in navigator) {
   navigator.serviceWorker.register("sw.js");
